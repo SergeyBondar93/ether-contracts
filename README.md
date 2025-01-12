@@ -1,3 +1,11 @@
 ## Counter contract deployed on sepolia - 0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb
 
-## SimpleERC20 contract deployed on sepolia - 0xaDA30D7cAFb5760d2c026a34240355992e4e76D8
+https://sepolia.etherscan.io/address/0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb#code
+
+## SimpleERC20 contract deployed on sepolia - 0x9D35C185Cae7050e46AE359b52134569e31e9C5D
+
+https://sepolia.etherscan.io/address/0x9D35C185Cae7050e46AE359b52134569e31e9C5D#code
+
+## SimpleERC20 TOKEN address: 0x9d35c185cae7050e46ae359b52134569e31e9c5d
+
+https://sepolia.etherscan.io/token/0x9d35c185cae7050e46ae359b52134569e31e9c5d

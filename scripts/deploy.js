@@ -1,8 +1,8 @@
 const fs = require("fs");
 
 async function main() {
-  const Counter = await hre.ethers.getContractFactory("Counter");
-  const counter = await Counter.deploy();
+  const Counter = await hre.ethers.getContractFactory("SimpleERC20");
+  const counter = await Counter.deploy(1_000_000);
 
   await counter.waitForDeployment();
 

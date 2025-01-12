@@ -1,9 +1,9 @@
 export const getHistory = (contract) => {
   async function getContractEvents() {
     try {
-      // Fetch all past Incremented events
-      const incrementedEvents = await contract.queryFilter("Incremented");
-      const decrementedEvents = await contract.queryFilter("Decremented");
+      // Fetch all past Transfer events
+      const incrementedEvents = await contract.queryFilter("Transfer");
+      const decrementedEvents = await contract.queryFilter("Approval");
       console.log("!Start getting ");
 
       // Process events
@@ -25,10 +25,10 @@ export const getHistory = (contract) => {
   }
   getContractEvents();
 
-  contract.on("Incremented", (caller, newCount, event) => {
-    console.log(`Incremented by ${caller}, new count: ${newCount}`);
+  contract.on("Transfer", (caller, newCount, event) => {
+    console.log(`Transfer by ${caller}, new count: ${newCount}`);
   });
-  contract.on("Decremented", (caller, newCount, event) => {
-    console.log(`Incremented by ${caller}, new count: ${newCount}`);
+  contract.on("Approval", (caller, newCount, event) => {
+    console.log(`Transfer by ${caller}, new count: ${newCount}`);
   });
 };
