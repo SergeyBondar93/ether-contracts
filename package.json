@@ -9,11 +9,13 @@
     "run:node": "npx hardhat node",
     "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
-    "verify": "npx hardhat verify --network sepolia 0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb",
+    "verify:counter": "npx hardhat verify --network sepolia 0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb",
+    "verify:simple-erc-20": "npx hardhat verify --network sepolia 0xaDA30D7cAFb5760d2c026a34240355992e4e76D8",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.js"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0",
     "dotenv": "^16.4.7",
     "ethers": "^6.13.5"
   }

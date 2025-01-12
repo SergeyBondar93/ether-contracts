@@ -1,13 +1,3 @@
-# Sample Hardhat Project
+## Counter contract deployed on sepolia - 0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+## SimpleERC20 contract deployed on sepolia - 0xaDA30D7cAFb5760d2c026a34240355992e4e76D8

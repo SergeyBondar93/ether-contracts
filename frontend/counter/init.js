@@ -1,4 +1,4 @@
-import { ethers } from "../node_modules/ethers/dist/ethers.js";
+import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { contractAddress } from "./config.js";
 import { contractABI } from "./abi.js";
 import { getHistory } from "./getHistory.js";

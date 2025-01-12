@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counter Contract</title>
+  </head>
+  <body>
+    <h1>Counter Contract Interaction</h1>
+    <span>
+      Gas Price:
+      <span id="gas-price"></span>
+    </span>
+    <p>Current Count: <span id="count">Loading...</span></p>
+
+    <div class="operations">
+      <div class="operation-block">
+        <button id="increment">Increment</button>
+        <span class="name"
+          >Gas:
+
+          <span id="inc-gas-for-transaction">Loading...</span>
+        </span>
+        <span class="name"
+          >ETH:
+
+          <span id="inc-cost-for-transaction">Loading...</span>
+        </span>
+      </div>
+
+      <div class="operation-block">
+        <button id="decrement">Decrement</button>
+        <span class="name"
+          >Gas:
+
+          <span id="dec-gas-for-transaction"> Loading...</span>
+        </span>
+        <span class="name"
+          >ETH:
+
+          <span id="dec-cost-for-transaction"> Loading...</span>
+        </span>
+      </div>
+    </div>
+
+    <ul id="balances"></ul>
+
+    <script></script>
+
+    <script type="module">
+      import "./init.js";
+    </script>
+  </body>
+
+  <style>
+    .address {
+      display: inline-block;
+      width: 450px;
+    }
+
+    .operations {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .operation-block {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .operation-block button {
+      width: 150px;
+    }
+  </style>
+</html>

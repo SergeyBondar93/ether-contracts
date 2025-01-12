@@ -1,5 +1,5 @@
-import { ethers } from "../node_modules/ethers/dist/ethers.js";
-import { accs } from "../env.js";
+import { ethers } from "../../node_modules/ethers/dist/ethers.js";
+import { accs } from "../../env.js";
 
 export async function updateCount(contract, provider) {
   // Use the provider for read-only methods

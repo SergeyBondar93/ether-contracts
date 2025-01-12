@@ -19,7 +19,7 @@ export async function estimateTransactionGas(
 }
 
 export async function getGasPrice(provider) {
-  return (await provider.getFeeData()).gasPrice;
+  return ethers.getBigInt(await provider.send("eth_gasPrice", []));
 }
 
 export async function calculateTransactionCost(estimatedGas, provider) {
