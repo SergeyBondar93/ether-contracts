@@ -7,6 +7,9 @@ contract SimpleERC20 {
     string public symbol = "SIM";
     uint8 public decimals = 18;
     uint256 public totalSupply;
+    uint256 public buyRate = 1000; // Number of SIM tokens per 1 ETH when buying
+    uint256 public sellRate = 1100; // Number of SIM tokens to sell for 1 ETH
+    address public owner; // The creator of the contract
 
     // Mappings
     mapping(address => uint256) public balanceOf;
@@ -18,9 +21,16 @@ contract SimpleERC20 {
 
     // Constructor
     constructor(uint256 _initialSupply) {
+        owner = msg.sender; // Set the deployer as the owner
         totalSupply = _initialSupply * (10 ** uint256(decimals));
         balanceOf[msg.sender] = totalSupply;
         emit Transfer(address(0), msg.sender, totalSupply);
+    }
+
+    // Modifier to restrict access to the owner
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only the owner can perform this action");
+        _;
     }
 
     // Transfer function
@@ -50,5 +60,41 @@ contract SimpleERC20 {
 
         emit Transfer(_from, _to, _value);
         return true;
+    }
+
+    // Payable function to buy tokens
+    function buyTokens() public payable {
+        require(msg.value > 0, "Must send some Ether");
+
+        uint256 tokensToBuy = msg.value * buyRate; // Calculate the number of tokens to transfer
+        require(balanceOf[address(this)] >= tokensToBuy, "Not enough tokens in the contract");
+
+        balanceOf[address(this)] -= tokensToBuy;
+        balanceOf[msg.sender] += tokensToBuy;
+
+        emit Transfer(address(this), msg.sender, tokensToBuy);
+    }
+
+    // Function to sell tokens for ETH
+    function sellTokens(uint256 _amount) public {
+        require(_amount > 0, "Amount must be greater than zero");
+        require(balanceOf[msg.sender] >= _amount, "Insufficient token balance");
+
+        uint256 etherToTransfer = _amount / sellRate; // Calculate Ether to send
+        require(address(this).balance >= etherToTransfer, "Insufficient Ether in contract");
+
+        balanceOf[msg.sender] -= _amount;
+        balanceOf[address(this)] += _amount;
+
+        payable(msg.sender).transfer(etherToTransfer); // Transfer Ether to the seller
+
+        emit Transfer(msg.sender, address(this), _amount);
+    }
+
+    // Function to withdraw Ether from the contract (restricted to owner)
+    function withdrawEther() public onlyOwner {
+        uint256 balance = address(this).balance;
+        require(balance > 0, "No Ether to withdraw");
+        payable(msg.sender).transfer(balance);
     }
 }
