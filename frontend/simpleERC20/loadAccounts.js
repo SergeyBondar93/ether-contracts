@@ -67,6 +67,12 @@ export async function loadAccounts(contract, provider) {
     document
       .getElementById("approve-btn")
       .addEventListener("click", () => approveTokens(contract, provider));
+
+    document
+      .querySelector("#withdrow-block button")
+      ?.addEventListener("click", () =>
+        withdrowETHToCreatorAccount(contract, provider)
+      );
   }
 }
 
@@ -104,8 +110,10 @@ async function allocateTo(contract, account, provider) {
 async function buyTokens(contract, provider) {
   const value = Number(document.getElementById("buy-value").value);
 
-  if (Number.isNaN(value)) {
-    alert("Please enter a valid number. max number = 1");
+  if (Number.isNaN(value) || value > 1) {
+    alert(
+      "Please enter a valid number. max number = 1. You need to enter value in ETH"
+    );
     return;
   }
 
@@ -118,10 +126,22 @@ async function buyTokens(contract, provider) {
 }
 
 async function sellTokens(contract, provider) {
-  const tx = await contract.buyTokens({
-    value: ethers.utils.parseUnits("0.001", "ether"),
-  });
+  const value = Number(document.getElementById("sell-value").value);
+
+  if (Number.isNaN(value)) {
+    alert("Please enter a valid number.");
+    return;
+  }
+  const formattedValue = ethers.parseEther(`${value}`);
+
+  const tx = await contract.sellTokens(formattedValue);
   await tx.wait();
   alert(`You have sold tokens`);
   loadAccounts(contract, provider);
+}
+
+async function withdrowETHToCreatorAccount(contract, provider) {
+  const tx = await contract.withdrawEther();
+  await tx.wait();
+  alert(`You have sold tokens`);
 }
