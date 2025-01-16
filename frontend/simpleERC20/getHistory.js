@@ -86,3 +86,5 @@ export const getHistory = (contract) => {
     console.log("!START APPROVAL", _a, _b, _c, event);
   });
 };
+
+// TODO - add live updates for transaction in progress
