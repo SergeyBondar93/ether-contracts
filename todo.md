@@ -1,11 +1,9 @@
 #### **Easy**
 
-[ ] test checkbox
-
 1.  **Token Creator**
 
-    - [ ] Build and deploy your own ERC-20 token on a testnet.
-    - [ ] Features: Minting, burning, and transferring tokens.
+    - [x] Build and deploy your own ERC-20 token on a testnet.
+    - [x] Features: Minting, burning, and transferring tokens.
     - [ ] Tools: Solidity, Hardhat, MetaMask.
 
 2.  **Basic Token Wallet**
