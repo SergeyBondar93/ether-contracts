@@ -10,10 +10,7 @@ async function main() {
   console.log(`Counter deployed to: ${address}`);
 
   // Save address to a file
-  fs.writeFileSync(
-    "./frontend/config.js",
-    `export const contractAddress = "${address}";`
-  );
+  fs.writeFileSync("./frontend/config.txt", `ADDRESS=${address}`);
 }
 
 main().catch((error) => {

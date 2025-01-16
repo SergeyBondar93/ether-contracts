@@ -5,6 +5,7 @@ let isInited = false;
 export async function loadAccounts(contract, provider) {
   const accounts = await provider.listAccounts();
   console.log(provider);
+  console.log(contract);
 
   const accountsList = document.getElementById("accounts-list");
   accountsList.innerHTML = "";
@@ -14,13 +15,9 @@ export async function loadAccounts(contract, provider) {
     console.log("Please switch your MetaMask to the Sepolia network.");
     return;
   }
-
-  const contractSIMbalance = await contract.balanceOf(
-    "0x0a080953a00794Bb9b69eEdd4c3B4028076D4134"
-  );
-  const contractNativeBalance = await provider.getBalance(
-    "0x0a080953a00794Bb9b69eEdd4c3B4028076D4134"
-  );
+  const address = await contract.getAddress();
+  const contractSIMbalance = await contract.balanceOf(address);
+  const contractNativeBalance = await provider.getBalance(address);
   document.getElementById("contract-sim-balance").innerHTML =
     ethers.formatEther(contractSIMbalance);
   document.getElementById("contract-eth-balance").innerHTML =

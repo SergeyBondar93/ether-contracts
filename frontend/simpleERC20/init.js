@@ -13,6 +13,10 @@ async function initialize() {
   signer = await provider.getSigner();
   contract = new ethers.Contract(contractAddress, contractABI, signer);
 
+  document.querySelector(
+    "#contract-address"
+  ).innerHTML = `Contract address: ${contractAddress}`;
+
   const currentAddress = await signer.getAddress();
 
   document.getElementById(

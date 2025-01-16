@@ -18,6 +18,7 @@ contract SimpleERC20 {
     // Events
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Burn(address indexed burner, uint256 value); // Event for burning tokens
 
     // Constructor
     constructor(uint256 _initialSupply) {
@@ -96,5 +97,17 @@ contract SimpleERC20 {
         uint256 balance = address(this).balance;
         require(balance > 0, "No Ether to withdraw");
         payable(msg.sender).transfer(balance);
+    }
+
+    // Burn function
+    function burn(uint256 _amount) public {
+        require(_amount > 0, "Amount must be greater than zero");
+        require(balanceOf[msg.sender] >= _amount, "Insufficient token balance");
+
+        balanceOf[msg.sender] -= _amount; // Reduce the sender's balance
+        totalSupply -= _amount; // Decrease the total supply
+
+        emit Burn(msg.sender, _amount);
+        emit Transfer(msg.sender, address(0), _amount); // Emit a transfer to the zero address
     }
 }
