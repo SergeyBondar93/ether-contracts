@@ -4,16 +4,16 @@
 
     - [x] Build and deploy your own ERC-20 token on a testnet.
     - [x] Features: Minting, burning, and transferring tokens.
-    - [ ] Tools: Solidity, Hardhat, MetaMask.
+    - [x] Tools: Solidity, Hardhat, MetaMask.
 
 2.  **Basic Token Wallet**
 
-    - [ ] Create a simple React app that connects to MetaMask and displays the balance of your ERC-20 token.
-    - [ ] Features: Token balance display, transaction history.
+    - [x] Create a simple React app that connects to MetaMask and displays the balance of your ERC-20 token.
+    - [x] Features: Token balance display, transaction history.
 
 3.  **Airdrop Smart Contract**
 
-    - [ ] Write a smart contract to distribute ERC-20 tokens to multiple addresses.
+    - [x] Write a smart contract to distribute ERC-20 tokens to multiple addresses.
     - [ ] Features: Automated airdrop function.
 
 ---
