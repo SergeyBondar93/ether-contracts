@@ -75,5 +75,28 @@
     li {
       margin-bottom: 15px;
     }
+
+    .blink-green {
+      animation: blink-green 5s;
+    }
+    .blink-red {
+      animation: blink-red 5s;
+    }
+    @keyframes blink-green {
+      0% {
+        background-color: #1ce74b;
+      }
+      100% {
+        background-color: white;
+      }
+    }
+    @keyframes blink-red {
+      0% {
+        background-color: #ee192b;
+      }
+      100% {
+        background-color: white;
+      }
+    }
   </style>
 </html>

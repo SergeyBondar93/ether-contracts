@@ -42,7 +42,6 @@ export async function loadAccounts(contract, provider) {
   // console.log(contract);
 
   const accountsList = document.getElementById("accounts-list");
-  accountsList.innerHTML = "";
 
   const network = await provider.getNetwork();
   if (network.name !== "sepolia") {
@@ -61,19 +60,61 @@ export async function loadAccounts(contract, provider) {
     const balance = await contract.balanceOf(account.address);
     const nativeBalance = await provider.getBalance(account);
     const ethBalance = ethers.formatEther(nativeBalance);
+    const simBalance = ethers.formatEther(balance);
 
-    const listItem = document.createElement("li");
+    const existingElement = document.getElementById(account.address);
+    const listItem = existingElement || document.createElement("li");
 
-    const btnId = `btn-all-to-${account.address}`;
+    listItem.id = account.address;
+
+    const btnId = `allocate-to-${account.address}-btn`;
+
+    let oldETHBalance = 0;
+    let oldSIMBalance = 0;
+
+    if (existingElement) {
+      oldETHBalance = Number(
+        existingElement.querySelector(".eth-balance").innerText
+      );
+      oldSIMBalance = Number(
+        existingElement.querySelector(".sim-balance").innerText
+      );
+    }
 
     listItem.innerHTML = `
       ${account.name || "Account"}: 
-     <b> ${ethBalance}  SepoliaETH. </b>
-      ${ethers.formatEther(balance)} SIM 
+     <b> <span class="eth-balance" >${ethBalance}</span>  SepoliaETH. </b>
+       <span class="sim-balance" > ${simBalance}</span> SIM 
       (${account.address})
       <button id="${btnId}">Allocate</button>
     `;
-    accountsList.appendChild(listItem);
+
+    if (!existingElement) {
+      accountsList.appendChild(listItem);
+    } else {
+      const ethBlock = existingElement.querySelector(".eth-balance");
+      const simBlock = existingElement.querySelector(".sim-balance");
+      if (ethBalance > oldETHBalance) {
+        ethBlock.classList.remove("blink-red");
+        ethBlock.classList.add("blink-green");
+      } else if (ethBalance < oldETHBalance) {
+        ethBlock.classList.remove("blink-green");
+        ethBlock.classList.add("blink-red");
+      }
+
+      if (simBalance > oldSIMBalance) {
+        simBlock.classList.remove("blink-red");
+        simBlock.classList.add("blink-green");
+      } else if (simBalance < oldSIMBalance) {
+        simBlock.classList.remove("blink-green");
+        simBlock.classList.add("blink-red");
+      }
+
+      // setTimeout(() => {
+      //   ethBlock.classList.remove("blink-green", "blink-red");
+      //   simBlock.classList.remove("blink-green", "blink-red");
+      // }, 3000);
+    }
 
     document
       .getElementById(btnId)
