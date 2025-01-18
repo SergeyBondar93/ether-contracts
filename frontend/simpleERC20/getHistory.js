@@ -15,27 +15,31 @@ const getAccName = (address) => {
 
 const LOADING_STATE = "Transaction is is progress...";
 
-async function getEventRepresentation(event) {
+export async function adjustTransactionsHistory(event) {
   const li = document.createElement("li");
+  const transactionHash = event.transactionHash || event.log.transactionHash;
+  const blockNumber = event.blockNumber || event.log?.blockNumber;
+
+  if (!transactionHash) return;
+
+  document.getElementById(transactionHash)?.remove();
 
   const [from, to, amount] = event.args;
 
-  const hashLine = event.transactionHash
-    ? `${event.transactionHash} <a target="_blank" rel="noreferrer noopener nofollow" href="https://sepolia.etherscan.io/tx/${event.transactionHash}" >Etherscan</a>`
-    : LOADING_STATE;
+  const hashLine = ` <a target="_blank" rel="noreferrer noopener nofollow" href="https://sepolia.etherscan.io/tx/${transactionHash}" >Etherscan</a>`;
 
   const eventInfo = `
       <strong>Event Name (from event.fragment.name):</strong> ${
-        event.fragment.name
+        event.fragment.name || LOADING_STATE
       } <br>
-      <strong>Block Number:</strong> ${event.blockNumber || LOADING_STATE} <br>
+      <strong>Block Number:</strong> ${blockNumber || LOADING_STATE} <br>
       <strong>Transaction Hash:</strong> ${hashLine}  <br>
       
       <span>From: ${getAccName(from)}</span>
 <br/>
 <span>To: ${getAccName(to)}</span>
 <br/>
-<span>Amount: ${ethers.formatEther(amount)}</span>
+<span>Amount: ${amount ? ethers.formatEther(amount) : LOADING_STATE}</span>
 
       <span> 
       
@@ -44,16 +48,15 @@ async function getEventRepresentation(event) {
 
   li.innerHTML = eventInfo;
 
-  return li;
+  li.id = transactionHash;
+
+  eventsList.prepend(li);
 }
 
 async function renderEvents(events) {
   eventsList.innerHTML = "";
 
-  events.forEach(async (event) => {
-    const li = await getEventRepresentation(event);
-    eventsList.prepend(li);
-  });
+  events.forEach(adjustTransactionsHistory);
 
   console.log("Events rendered successfully");
 }
@@ -76,15 +79,11 @@ export const getHistory = (contract) => {
   console.log("!GET HISTORY CALL");
 
   contract.on("Transfer", async (_a, _b, _c, event) => {
-    const li = await getEventRepresentation(event);
-    eventsList.prepend(li);
+    adjustTransactionsHistory(event);
     console.log("!START TRANSFER", _a, _b, _c, event);
   });
   contract.on("Approval", async (_a, _b, _c, event) => {
-    const li = await getEventRepresentation(event);
-    eventsList.prepend(li);
+    adjustTransactionsHistory(event);
     console.log("!START APPROVAL", _a, _b, _c, event);
   });
 };
-
-// TODO - add live updates for transaction in progress

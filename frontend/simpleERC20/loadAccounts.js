@@ -1,11 +1,45 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
-
+import { adjustTransactionsHistory } from "./getHistory.js";
 let isInited = false;
+
+const addTransactionToHistory = async (
+  provider,
+  transaction,
+  recipient,
+  { reverseArgs } = {}
+) => {
+  let args = [transaction.from, recipient];
+
+  if (reverseArgs) {
+    args.reverse();
+  }
+
+  adjustTransactionsHistory({
+    transactionHash: transaction.hash,
+    args,
+    fragment: { name: "" },
+  });
+  console.log(transaction);
+
+  return new Promise((res) => {
+    console.log("Transaction Hash:", transaction.hash);
+    const interval = setInterval(async () => {
+      const txReceipt = await provider.getTransactionReceipt(transaction.hash);
+      if (txReceipt) {
+        console.log("Transaction Receipt:", txReceipt);
+        res(txReceipt);
+        clearInterval(interval);
+      } else {
+        console.log("Transaction is still pending...");
+      }
+    }, 1000);
+  });
+};
 
 export async function loadAccounts(contract, provider) {
   const accounts = await provider.listAccounts();
-  console.log(provider);
-  console.log(contract);
+  // console.log(provider);
+  // console.log(contract);
 
   const accountsList = document.getElementById("accounts-list");
   accountsList.innerHTML = "";
@@ -79,17 +113,21 @@ async function transferTokens(contract, provider) {
   if (!recipient || !amount) return alert("Recipient and amount are required!");
 
   const tx = await contract.transfer(recipient, ethers.parseEther(amount));
+
+  addTransactionToHistory(provider, tx, recipient);
+
   await tx.wait();
   alert("Transfer complete!");
   loadAccounts(contract, provider);
 }
 
 async function approveTokens(contract, provider) {
-  const spender = document.getElementById("spender").value;
+  const recipient = document.getElementById("spender").value;
   const amount = document.getElementById("approve-amount").value;
-  if (!spender || !amount) return alert("Spender and amount are required!");
+  if (!recipient || !amount) return alert("Spender and amount are required!");
 
-  const tx = await contract.approve(spender, ethers.parseEther(amount));
+  addTransactionToHistory(provider, tx, recipient);
+  const tx = await contract.approve(recipient, ethers.parseEther(amount));
   await tx.wait();
   alert("Approval complete!");
 }
@@ -97,8 +135,10 @@ async function approveTokens(contract, provider) {
 async function allocateTo(contract, account, provider) {
   const amount = prompt("Enter amount to allocate:");
   if (!amount) return;
-
   const tx = await contract.transfer(account, ethers.parseEther(amount));
+
+  addTransactionToHistory(provider, tx, account);
+
   await tx.wait();
   alert(`Allocated ${amount} SIM to ${account}`);
   loadAccounts(contract, provider);
@@ -117,6 +157,11 @@ async function buyTokens(contract, provider) {
   const tx = await contract.buyTokens({
     value: ethers.parseUnits(String(value), "ether"),
   });
+
+  addTransactionToHistory(provider, tx, await contract.getAddress(), {
+    reverseArgs: true,
+  });
+
   await tx.wait();
   alert(`You have bought tokens`);
   loadAccounts(contract, provider);
@@ -132,6 +177,9 @@ async function sellTokens(contract, provider) {
   const formattedValue = ethers.parseEther(`${value}`);
 
   const tx = await contract.sellTokens(formattedValue);
+
+  addTransactionToHistory(provider, tx, await contract.getAddress());
+
   await tx.wait();
   alert(`You have sold tokens`);
   loadAccounts(contract, provider);
