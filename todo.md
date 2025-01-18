@@ -16,6 +16,11 @@
     - [x] Write a smart contract to distribute ERC-20 tokens to multiple addresses.
     - [ ] Features: Automated airdrop function.
 
+4.  **The Graph integration**
+
+    - [ ] Read the graph documentation
+    - [ ] Create a functionality to query all the contract and transactions data with the graph
+
 ---
 
 #### **Intermediate**
@@ -65,37 +70,37 @@
 
 #### **Blockchain Development**
 
-- **Solidity:** Advanced smart contract development.
-- **Ethers.js/Web3.js:** Blockchain interaction.
-- **Hardhat/Truffle:** Development and testing frameworks.
-- **OpenZeppelin:** Reusable smart contract libraries.
+- [ ] **Solidity:** Advanced smart contract development.
+- [ ] **Ethers.js/Web3.js:** Blockchain interaction.
+- [ ] **Hardhat/Truffle:** Development and testing frameworks.
+- [ ] **OpenZeppelin:** Reusable smart contract libraries.
 
 #### **Frontend Development**
 
-- **React.js/Vue.js:** Frontend frameworks for dApps.
-- **Vite:** Fast development environment for dApps.
-- **TypeScript:** Strongly typed JavaScript for better error handling.
+- [x] **React.js/Vue.js:** Frontend frameworks for dApps.
+- [x] **Vite:** Fast development environment for dApps.
+- [x] **TypeScript:** Strongly typed JavaScript for better error handling.
 
 #### **Blockchain Infrastructure**
 
-- **Ethereum:** Core blockchain concepts and tools like Geth.
-- **Layer 2 Solutions:** Optimism, Arbitrum.
-- **IPFS/Filecoin:** Decentralized file storage.
-- **Oracles:** Chainlink for real-world data integration.
+- [ ] **Ethereum:** Core blockchain concepts and tools like Geth.
+- [ ] **Layer 2 Solutions:** Optimism, Arbitrum.
+- [ ] **IPFS/Filecoin:** Decentralized file storage.
+- [ ] **Oracles:** Chainlink for real-world data integration.
 
 #### **Smart Contract Security**
 
-- **Auditing Tools:** MythX, Slither, or Remix IDE for security analysis.
-- **Best Practices:** Avoid common pitfalls like reentrancy or overflow.
+- [ ] **Auditing Tools:** MythX, Slither, or Remix IDE for security analysis.
+- [ ] **Best Practices:** Avoid common pitfalls like reentrancy or overflow.
 
 #### **Advanced Topics**
 
-- **DeFi Protocols:** Uniswap, Aave, Compound.
-- **Cross-Chain Solutions:** Bridges like Multichain or Connext.
-- **Testing:** Writing automated tests with tools like Mocha/Chai for smart contracts.
+- [ ] **DeFi Protocols:** Uniswap, Aave, Compound.
+- [ ] **Cross-Chain Solutions:** Bridges like Multichain or Connext.
+- [ ] **Testing:** Writing automated tests with tools like Mocha/Chai for smart contracts.
 
 #### **Job-Ready Tools**
 
-- **Version Control:** Git/GitHub.
-- **CI/CD Pipelines:** Automating testing and deployment.
-- **Docker:** Containerize blockchain nodes for testing.”
+- [x] **Version Control:** Git/GitHub.
+- [x] **CI/CD Pipelines:** Automating testing and deployment.
+- [x] **Docker:** Containerize blockchain nodes for testing.”
