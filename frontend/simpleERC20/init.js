@@ -26,8 +26,11 @@ async function initialize() {
   if (currentAddress === "0xe5982F617fc8c8Bf55Ccc919F78DC6129Acb5532") {
     const withdrowBtn = document.createElement("button");
     withdrowBtn.innerHTML = "Withdrow all eth from account";
-
     document.getElementById("withdrow-block").append(withdrowBtn);
+
+    const airdropBtn = document.createElement("button");
+    airdropBtn.innerHTML = "Airdrop";
+    document.getElementById("airdrop-block").append(airdropBtn);
   }
 
   loadAccounts(contract, provider);

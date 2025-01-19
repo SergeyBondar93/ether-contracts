@@ -17,7 +17,11 @@ contract SimpleERC20 {
 
     // Events
     event Transfer(address indexed from, address indexed to, uint256 value);
-    event Approval(address indexed owner, address indexed spender, uint256 value);
+    event Approval(
+        address indexed owner,
+        address indexed spender,
+        uint256 value
+    );
     event Burn(address indexed burner, uint256 value); // Event for burning tokens
 
     // Constructor
@@ -35,7 +39,10 @@ contract SimpleERC20 {
     }
 
     // Transfer function
-    function transfer(address _to, uint256 _value) public returns (bool success) {
+    function transfer(
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
         require(balanceOf[msg.sender] >= _value, "Insufficient balance");
         balanceOf[msg.sender] -= _value;
         balanceOf[_to] += _value;
@@ -44,14 +51,21 @@ contract SimpleERC20 {
     }
 
     // Approve function
-    function approve(address _spender, uint256 _value) public returns (bool success) {
+    function approve(
+        address _spender,
+        uint256 _value
+    ) public returns (bool success) {
         allowance[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
         return true;
     }
 
     // TransferFrom function
-    function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _value
+    ) public returns (bool success) {
         require(balanceOf[_from] >= _value, "Insufficient balance");
         require(allowance[_from][msg.sender] >= _value, "Allowance exceeded");
 
@@ -68,7 +82,10 @@ contract SimpleERC20 {
         require(msg.value > 0, "Must send some Ether");
 
         uint256 tokensToBuy = msg.value * buyRate; // Calculate the number of tokens to transfer
-        require(balanceOf[address(this)] >= tokensToBuy, "Not enough tokens in the contract");
+        require(
+            balanceOf[address(this)] >= tokensToBuy,
+            "Not enough tokens in the contract"
+        );
 
         balanceOf[address(this)] -= tokensToBuy;
         balanceOf[msg.sender] += tokensToBuy;
@@ -82,7 +99,10 @@ contract SimpleERC20 {
         require(balanceOf[msg.sender] >= _amount, "Insufficient token balance");
 
         uint256 etherToTransfer = _amount / sellRate; // Calculate Ether to send
-        require(address(this).balance >= etherToTransfer, "Insufficient Ether in contract");
+        require(
+            address(this).balance >= etherToTransfer,
+            "Insufficient Ether in contract"
+        );
 
         balanceOf[msg.sender] -= _amount;
         balanceOf[address(this)] += _amount;
@@ -109,5 +129,31 @@ contract SimpleERC20 {
 
         emit Burn(msg.sender, _amount);
         emit Transfer(msg.sender, address(0), _amount); // Emit a transfer to the zero address
+    }
+
+    // Add this function to your contract
+    function airdrop5Percent(
+        address[] calldata recipients,
+        uint256 percent
+    ) external onlyOwner {
+        for (uint256 i = 0; i < recipients.length; i++) {
+            address recipient = recipients[i];
+
+            // Skip recipients with less than 10 tokens
+            if (balanceOf[recipient] < 10 * (10 ** uint256(decimals))) {
+                continue;
+            }
+
+            uint256 amount = (balanceOf[recipient] * percent) / 100;
+
+            require(
+                balanceOf[msg.sender] >= amount,
+                "Not enough tokens for airdrop"
+            );
+            balanceOf[msg.sender] -= amount;
+            balanceOf[recipient] += amount;
+
+            emit Transfer(msg.sender, recipient, amount);
+        }
     }
 }

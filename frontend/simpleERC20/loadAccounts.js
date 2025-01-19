@@ -145,6 +145,10 @@ export async function loadAccounts(contract, provider) {
       ?.addEventListener("click", () =>
         withdrowETHToCreatorAccount(contract, provider)
       );
+
+    document
+      .querySelector("#airdrop-block button")
+      ?.addEventListener("click", () => performAirdrop(contract, provider));
   }
 }
 
@@ -230,4 +234,13 @@ async function withdrowETHToCreatorAccount(contract, provider) {
   const tx = await contract.withdrawEther();
   await tx.wait();
   alert(`You have sold tokens`);
+}
+
+async function performAirdrop(contract, provider) {
+  const tx = await contract.airdrop5Percent();
+
+  addTransactionToHistory(provider, tx, "");
+
+  await tx.wait();
+  console.log(`Airdrop has done successfully`);
 }
