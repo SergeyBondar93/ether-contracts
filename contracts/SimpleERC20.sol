@@ -140,7 +140,10 @@ contract SimpleERC20 {
             address recipient = recipients[i];
 
             // Skip recipients with less than 10 tokens
-            if (balanceOf[recipient] < 10 * (10 ** uint256(decimals))) {
+            if (
+                balanceOf[recipient] < 10 * (10 ** uint256(decimals)) ||
+                recipient == msg.sender
+            ) {
                 continue;
             }
 

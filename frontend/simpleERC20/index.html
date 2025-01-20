@@ -6,6 +6,21 @@
     <title>Simple ERC-20 Interaction</title>
   </head>
   <body>
+    <div id="dialog" class="dialog-overlay" style="display: none">
+      <div class="dialog">
+        <p>Enter addresses:</p>
+        <textarea
+          id="dialog-input"
+          class="dialog-input"
+          placeholder="Enter value..."
+        ></textarea>
+        <div class="dialog-buttons">
+          <button id="cancel-button">Cancel</button>
+          <button id="confirm-button">Confirm</button>
+        </div>
+      </div>
+    </div>
+
     <h1>Simple ERC-20 Interaction.</h1>
     <i id="contract-address"></i>
     <i id="token-address"></i>
@@ -18,6 +33,7 @@
     <h2 id="current">Current account: Loading...</h2>
 
     <div id="withdrow-block"></div>
+    <p></p>
     <div id="airdrop-block"></div>
 
     <p></p>
@@ -98,6 +114,42 @@
       100% {
         background-color: white;
       }
+    }
+
+    .dialog-input {
+      flex-grow: 1;
+      width: 100%;
+    }
+    .dialog-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .dialog {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+      width: 500px;
+      height: 500px;
+      flex-direction: column;
+      display: flex;
+      gap: 20px;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
   </style>
 </html>
