@@ -36,6 +36,8 @@ const addTransactionToHistory = async (
   });
 };
 
+let initial = true;
+
 export async function loadAccounts(contract, provider) {
   const accounts = await provider.listAccounts();
   // console.log(provider);
@@ -51,10 +53,44 @@ export async function loadAccounts(contract, provider) {
   const address = await contract.getAddress();
   const contractSIMbalance = await contract.balanceOf(address);
   const contractNativeBalance = await provider.getBalance(address);
-  document.getElementById("contract-sim-balance").innerHTML =
-    ethers.formatEther(contractSIMbalance);
-  document.getElementById("contract-eth-balance").innerHTML =
-    ethers.formatEther(contractNativeBalance);
+
+  const contractETHbalanceElement = document.getElementById(
+    "contract-eth-balance"
+  );
+  const contractSIMbalanceElement = document.getElementById(
+    "contract-sim-balance"
+  );
+
+  const ethBalance = ethers.formatEther(contractNativeBalance);
+  const simBalance = ethers.formatEther(contractSIMbalance);
+
+  const oldETHbalance = +contractETHbalanceElement.innerText;
+  const oldSIMbalance = +contractSIMbalanceElement.innerText;
+
+  contractETHbalanceElement.innerHTML = ethers.formatEther(
+    contractNativeBalance
+  );
+  contractSIMbalanceElement.innerHTML = ethers.formatEther(contractSIMbalance);
+
+  if (!initial) {
+    if (ethBalance > oldETHbalance) {
+      contractETHbalanceElement.classList.remove("blink-red");
+      contractETHbalanceElement.classList.add("blink-green");
+    } else if (ethBalance < oldETHbalance) {
+      contractETHbalanceElement.classList.remove("blink-green");
+      contractETHbalanceElement.classList.add("blink-red");
+    }
+
+    if (simBalance > oldSIMbalance) {
+      contractSIMbalanceElement.classList.remove("blink-red");
+      contractSIMbalanceElement.classList.add("blink-green");
+    } else if (simBalance < oldSIMbalance) {
+      contractSIMbalanceElement.classList.remove("blink-green");
+      contractSIMbalanceElement.classList.add("blink-red");
+    }
+  } else {
+    initial = false;
+  }
 
   for (const account of accounts) {
     const balance = await contract.balanceOf(account.address);
