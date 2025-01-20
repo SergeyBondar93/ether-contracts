@@ -132,7 +132,7 @@ contract SimpleERC20 {
     }
 
     // Add this function to your contract
-    function airdrop5Percent(
+    function airdrop(
         address[] calldata recipients,
         uint256 percent
     ) external onlyOwner {

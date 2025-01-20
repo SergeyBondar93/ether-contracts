@@ -10,7 +10,7 @@
     "deploy:local": "npx hardhat run scripts/deploy.js --network localhost",
     "deploy:sepolia": "npx hardhat run scripts/deploy.js --network sepolia",
     "verify:counter": "npx hardhat verify --network sepolia 0x8412Ac36f72d62B0Dc5aDb46c20987b2dc7BEbAb",
-    "verify:simple-erc-20": "npx hardhat verify --network sepolia 0x9AB56740d65869C320203F725C0084eac24094E9 1000000",
+    "verify:simple-erc-20": "npx hardhat verify --network sepolia 0x7E5103D45D1b3655b0A54AE164d2D1BB909057Fd 1000000",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.js"
   },

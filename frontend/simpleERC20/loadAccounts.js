@@ -233,7 +233,7 @@ async function sellTokens(contract, provider) {
 async function withdrowETHToCreatorAccount(contract, provider) {
   const tx = await contract.withdrawEther();
   await tx.wait();
-  alert(`You have sold tokens`);
+  alert(`You have withdrown tokens`);
 }
 
 function waitForUserChoice(accounts) {
