@@ -1,13 +1,14 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
+import { getContract, getProvider } from "./essentials.js";
 import { adjustTransactionsHistory } from "./getHistory.js";
 let isInited = false;
 
 const addTransactionToHistory = async (
-  provider,
   transaction,
   recipient,
   { reverseArgs } = {}
 ) => {
+  const provider = getProvider();
   let args = [transaction.from, recipient];
 
   if (reverseArgs) {
@@ -38,7 +39,9 @@ const addTransactionToHistory = async (
 
 let initial = true;
 
-export async function loadAccounts(contract, provider) {
+export async function loadAccounts() {
+  const provider = getProvider();
+  const contract = getContract();
   const accounts = await provider.listAccounts();
   // console.log(provider);
   // console.log(contract);
@@ -98,6 +101,9 @@ export async function loadAccounts(contract, provider) {
     const ethBalance = ethers.formatEther(nativeBalance);
     const simBalance = ethers.formatEther(balance);
 
+    const ensName = await provider.lookupAddress(account.address);
+    // console.log('!!ENS', account.address, ensName);
+
     const existingElement = document.getElementById(account.address);
     const listItem = existingElement || document.createElement("li");
 
@@ -154,9 +160,7 @@ export async function loadAccounts(contract, provider) {
 
     document
       .getElementById(btnId)
-      .addEventListener("click", () =>
-        allocateTo(contract, account.address, provider)
-      );
+      .addEventListener("click", () => allocateTo(account.address));
   }
 
   if (!isInited) {
@@ -164,68 +168,74 @@ export async function loadAccounts(contract, provider) {
 
     document
       .getElementById("buy-btn")
-      .addEventListener("click", () => buyTokens(contract, provider));
+      .addEventListener("click", () => buyTokens());
     document
       .getElementById("sell-btn")
-      .addEventListener("click", () => sellTokens(contract, provider));
+      .addEventListener("click", () => sellTokens());
 
     document
       .getElementById("transfer-btn")
-      .addEventListener("click", () => transferTokens(contract, provider));
+      .addEventListener("click", () => transferTokens());
     document
       .getElementById("approve-btn")
-      .addEventListener("click", () => approveTokens(contract, provider));
+      .addEventListener("click", () => approveTokens());
 
     document
       .querySelector("#withdrow-block button")
-      ?.addEventListener("click", () =>
-        withdrowETHToCreatorAccount(contract, provider)
-      );
+      ?.addEventListener("click", () => withdrowETHToCreatorAccount());
 
     document
       .querySelector("#airdrop-block button")
-      ?.addEventListener("click", () => performAirdrop(contract, provider));
+      ?.addEventListener("click", () => performAirdrop());
   }
 }
 
-async function transferTokens(contract, provider) {
+async function transferTokens() {
+  const provider = getProvider();
+  const contract = getContract();
   const recipient = document.getElementById("recipient").value;
   const amount = document.getElementById("amount").value;
   if (!recipient || !amount) return alert("Recipient and amount are required!");
 
   const tx = await contract.transfer(recipient, ethers.parseEther(amount));
 
-  addTransactionToHistory(provider, tx, recipient);
+  addTransactionToHistory(tx, recipient);
 
   await tx.wait();
   alert("Transfer complete!");
-  loadAccounts(contract, provider);
+  loadAccounts();
 }
 
-async function approveTokens(contract, provider) {
+async function approveTokens() {
+  const provider = getProvider();
+  const contract = getContract();
   const recipient = document.getElementById("spender").value;
   const amount = document.getElementById("approve-amount").value;
   if (!recipient || !amount) return alert("Spender and amount are required!");
 
-  addTransactionToHistory(provider, tx, recipient);
+  addTransactionToHistory(tx, recipient);
   const tx = await contract.approve(recipient, ethers.parseEther(amount));
   await tx.wait();
   alert("Approval complete!");
 }
 
-async function allocateTo(contract, account, provider) {
+async function allocateTo(account) {
+  const provider = getProvider();
+  const contract = getContract();
   const amount = prompt("Enter amount to allocate:");
   if (!amount) return;
   const tx = await contract.transfer(account, ethers.parseEther(amount));
 
-  addTransactionToHistory(provider, tx, account);
+  addTransactionToHistory(tx, account);
 
   await tx.wait();
   alert(`Allocated ${amount} SIM to ${account}`);
-  loadAccounts(contract, provider);
+  loadAccounts();
 }
 
-async function buyTokens(contract, provider) {
+async function buyTokens() {
+  const provider = getProvider();
+  const contract = getContract();
   const value = Number(document.getElementById("buy-value").value);
 
   if (Number.isNaN(value) || value > 1) {
@@ -239,16 +249,18 @@ async function buyTokens(contract, provider) {
     value: ethers.parseUnits(String(value), "ether"),
   });
 
-  addTransactionToHistory(provider, tx, await contract.getAddress(), {
+  addTransactionToHistory(tx, await contract.getAddress(), {
     reverseArgs: true,
   });
 
   await tx.wait();
   alert(`You have bought tokens`);
-  loadAccounts(contract, provider);
+  loadAccounts();
 }
 
-async function sellTokens(contract, provider) {
+async function sellTokens() {
+  const provider = getProvider();
+  const contract = getContract();
   const value = Number(document.getElementById("sell-value").value);
 
   if (Number.isNaN(value)) {
@@ -259,14 +271,16 @@ async function sellTokens(contract, provider) {
 
   const tx = await contract.sellTokens(formattedValue);
 
-  addTransactionToHistory(provider, tx, await contract.getAddress());
+  addTransactionToHistory(tx, await contract.getAddress());
 
   await tx.wait();
   alert(`You have sold tokens`);
-  loadAccounts(contract, provider);
+  loadAccounts();
 }
 
-async function withdrowETHToCreatorAccount(contract, provider) {
+async function withdrowETHToCreatorAccount() {
+  const provider = getProvider();
+  const contract = getContract();
   const tx = await contract.withdrawEther();
   await tx.wait();
   alert(`You have withdrown tokens`);
@@ -316,7 +330,9 @@ function waitForUserChoice(accounts) {
   });
 }
 
-async function performAirdrop(contract, provider) {
+async function performAirdrop() {
+  const provider = getProvider();
+  const contract = getContract();
   const accounts = await provider.listAccounts();
   const [continueChoice, addresses] = await waitForUserChoice(accounts);
 
@@ -324,9 +340,9 @@ async function performAirdrop(contract, provider) {
 
   const tx = await contract.airdrop(addresses, 5);
 
-  addTransactionToHistory(provider, tx, "");
+  addTransactionToHistory(tx, "");
 
   await tx.wait();
   console.log(`Airdrop has done successfully`);
-  loadAccounts(contract, provider);
+  loadAccounts();
 }

@@ -3,21 +3,21 @@ import { loadAccounts } from "./loadAccounts.js";
 import { contractAddress } from "./config.js";
 import { contractABI } from "./abi.js";
 import { getHistory } from "./getHistory.js";
+import { getProvider, getSigner, setContract, setProvider, setSigner } from "./essentials.js";
 
-const provider = new ethers.BrowserProvider(window.ethereum);
-let signer;
-let contract;
+setProvider(new ethers.BrowserProvider(window.ethereum));
+// const mainnetProvider = new providers.JsonRpcProvider("https://mainnet.infura.io/v3");
 
 async function initialize() {
-  await provider.send("eth_requestAccounts", []);
-  signer = await provider.getSigner();
-  contract = new ethers.Contract(contractAddress, contractABI, signer);
+  await getProvider().send("eth_requestAccounts", []);
+  setSigner(await getProvider().getSigner());
+  setContract(new ethers.Contract(contractAddress, contractABI, getSigner()));
 
   document.querySelector(
     "#contract-address"
   ).innerHTML = `Contract address: ${contractAddress}`;
 
-  const currentAddress = await signer.getAddress();
+  const currentAddress = await getSigner().getAddress();
 
   document.getElementById(
     "current"
@@ -33,9 +33,9 @@ async function initialize() {
     document.getElementById("airdrop-block").append(airdropBtn);
   }
 
-  loadAccounts(contract, provider);
+  loadAccounts();
 
-  getHistory(contract);
+  getHistory();
 
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", () => {

@@ -1,5 +1,6 @@
 import { contractAddress } from "./config.js";
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
+import { getContract } from "./essentials.js";
 const eventsList = document.getElementById("events-list");
 
 const getAccName = (address) => {
@@ -61,7 +62,8 @@ async function renderEvents(events) {
   console.log("Events rendered successfully");
 }
 
-export const getHistory = (contract) => {
+export const getHistory = () => {
+    const contract = getContract();
   async function getContractEvents() {
     try {
       const transferEvents = await contract.queryFilter("Transfer");
