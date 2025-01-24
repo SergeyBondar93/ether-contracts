@@ -319,15 +319,14 @@ function waitForUserChoice(accounts) {
 async function performAirdrop(contract, provider) {
   const accounts = await provider.listAccounts();
   const [continueChoice, addresses] = await waitForUserChoice(accounts);
-  console.log("User choice:", continueChoice);
-  console.log("Addresses:", addresses);
 
   if (!continueChoice) return;
 
-  const tx = await contract.airdrop5Percent(addresses, 10);
+  const tx = await contract.airdrop(addresses, 5);
 
   addTransactionToHistory(provider, tx, "");
 
   await tx.wait();
   console.log(`Airdrop has done successfully`);
+  loadAccounts(contract, provider);
 }

@@ -92,7 +92,7 @@ export const contractABI = [
         type: "uint256",
       },
     ],
-    name: "airdrop5Percent",
+    name: "airdrop",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
