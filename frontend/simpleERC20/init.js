@@ -1,12 +1,51 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { loadAccounts } from "./loadAccounts.js";
-import { contractAddress } from "./config.js";
-import { contractABI } from "./abi.js";
+import { contractAddress, ENS_SEPOLIA_ADDRESSES } from "./config.js";
+import {
+  contractABI,
+  ENSRegistryABI,
+  PublicResolverABI,
+  RegistrarControllerABI,
+} from "./abi.js";
 import { getHistory } from "./getHistory.js";
-import { getProvider, getSigner, setContract, setProvider, setSigner } from "./essentials.js";
+import {
+  getProvider,
+  getSigner,
+  setContract,
+  setENSRegistryContract,
+  setProvider,
+  setPublicResolverContract,
+  setRegistrarControllerContract,
+  setSigner,
+} from "./essentials.js";
+import { register } from "./registerEnsDomain.js";
+
+const provider = new ethers.BrowserProvider(window.ethereum);
 
 setProvider(new ethers.BrowserProvider(window.ethereum));
-// const mainnetProvider = new providers.JsonRpcProvider("https://mainnet.infura.io/v3");
+
+setENSRegistryContract(
+  new ethers.Contract(
+    ENS_SEPOLIA_ADDRESSES.ENSRegistry,
+    ENSRegistryABI,
+    provider
+  )
+);
+setPublicResolverContract(
+  new ethers.Contract(
+    ENS_SEPOLIA_ADDRESSES.PublicResolver,
+    PublicResolverABI,
+    provider
+  )
+);
+
+setRegistrarControllerContract(
+  new ethers.Contract(
+    ENS_SEPOLIA_ADDRESSES.ETHRegistrarController,
+    RegistrarControllerABI,
+    provider
+  )
+);
 
 async function initialize() {
   await getProvider().send("eth_requestAccounts", []);
@@ -45,3 +84,6 @@ async function initialize() {
 }
 
 initialize();
+
+
+register();

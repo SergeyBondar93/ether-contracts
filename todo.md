@@ -12,6 +12,7 @@
 
    - [x] Create a simple React app that connects to MetaMask and displays the balance of your ERC-20 token.
    - [x] Features: Token balance display, transaction history.
+   - [ ] ENS: Create functionality to get avatars for accounts.
 
 3. **Airdrop Smart Contract**
 

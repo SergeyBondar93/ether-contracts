@@ -349,3 +349,18 @@ export const contractABI = [
     type: "function",
   },
 ];
+
+
+export const ENSRegistryABI = [
+  "function setResolver(bytes32 node, address resolver) external",
+  "function owner(bytes32 node) view returns (address)",
+];
+
+export const PublicResolverABI = [
+  "function setText(bytes32 node, string key, string value) external",
+  "function text(bytes32 node, string key) view returns (string)",
+];
+
+export const RegistrarControllerABI = [
+  "function register(string name, address owner, uint duration, bytes32 secret) external payable",
+];

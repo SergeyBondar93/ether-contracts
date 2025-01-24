@@ -1,7 +1,10 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { getContract, getProvider } from "./essentials.js";
+import { fetchEnsAvatar } from "./fetchEnsAvatar.js";
 import { adjustTransactionsHistory } from "./getHistory.js";
+import { register } from "./registerEnsDomain.js";
 let isInited = false;
+
 
 const addTransactionToHistory = async (
   transaction,
@@ -101,7 +104,9 @@ export async function loadAccounts() {
     const ethBalance = ethers.formatEther(nativeBalance);
     const simBalance = ethers.formatEther(balance);
 
-    const ensName = await provider.lookupAddress(account.address);
+   
+    fetchEnsAvatar(account.address)
+
     // console.log('!!ENS', account.address, ensName);
 
     const existingElement = document.getElementById(account.address);
@@ -346,3 +351,4 @@ async function performAirdrop() {
   console.log(`Airdrop has done successfully`);
   loadAccounts();
 }
+
