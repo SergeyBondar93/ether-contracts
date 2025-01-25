@@ -18,45 +18,48 @@ import {
   setRegistrarControllerContract,
   setSigner,
 } from "./essentials.js";
-import { register } from "./registerEnsDomain.js";
+import { registerENSName } from "./registerEnsDomain.js";
 
 const provider = new ethers.BrowserProvider(window.ethereum);
 
 setProvider(new ethers.BrowserProvider(window.ethereum));
 
-setENSRegistryContract(
-  new ethers.Contract(
-    ENS_SEPOLIA_ADDRESSES.ENSRegistry,
-    ENSRegistryABI,
-    provider
-  )
-);
-setPublicResolverContract(
-  new ethers.Contract(
-    ENS_SEPOLIA_ADDRESSES.PublicResolver,
-    PublicResolverABI,
-    provider
-  )
-);
 
-setRegistrarControllerContract(
-  new ethers.Contract(
-    ENS_SEPOLIA_ADDRESSES.ETHRegistrarController,
-    RegistrarControllerABI,
-    provider
-  )
-);
 
 async function initialize() {
   await getProvider().send("eth_requestAccounts", []);
-  setSigner(await getProvider().getSigner());
-  setContract(new ethers.Contract(contractAddress, contractABI, getSigner()));
+  const signer = await provider.getSigner()
+  setSigner(signer);
+  setContract(new ethers.Contract(contractAddress, contractABI, signer));
+
+  setENSRegistryContract(
+    new ethers.Contract(
+      ENS_SEPOLIA_ADDRESSES.ENSRegistry,
+      ENSRegistryABI,
+      signer
+    )
+  );
+  setPublicResolverContract(
+    new ethers.Contract(
+      ENS_SEPOLIA_ADDRESSES.PublicResolver,
+      PublicResolverABI,
+      signer
+    )
+  );
+  
+  setRegistrarControllerContract(
+    new ethers.Contract(
+      ENS_SEPOLIA_ADDRESSES.ETHRegistrarController,
+      RegistrarControllerABI,
+      signer
+    )
+  );
 
   document.querySelector(
     "#contract-address"
   ).innerHTML = `Contract address: ${contractAddress}`;
 
-  const currentAddress = await getSigner().getAddress();
+  const currentAddress = await signer.getAddress();
 
   document.getElementById(
     "current"
@@ -81,9 +84,13 @@ async function initialize() {
       window.location.reload();
     });
   }
+
+  /**
+   * one-time action
+   */
+  registerENSName();
 }
 
 initialize();
 
 
-register();

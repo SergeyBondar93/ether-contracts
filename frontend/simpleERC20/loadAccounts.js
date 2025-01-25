@@ -2,7 +2,6 @@ import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { getContract, getProvider } from "./essentials.js";
 import { fetchEnsAvatar } from "./fetchEnsAvatar.js";
 import { adjustTransactionsHistory } from "./getHistory.js";
-import { register } from "./registerEnsDomain.js";
 let isInited = false;
 
 

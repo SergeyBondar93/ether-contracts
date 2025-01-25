@@ -1,6 +1,7 @@
 import { getMainnetProvider } from "./essentials.js";
 
 export async function fetchEnsAvatar(address) {
+  return;
   // Perform ENS lookup on Mainnet
   const mainnetProvider = getMainnetProvider();
   const ensName = await  mainnetProvider.lookupAddress(address);

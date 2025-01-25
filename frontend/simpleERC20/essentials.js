@@ -29,8 +29,6 @@ export const setPublicResolverContract = (_PublicResolverContract) => {
   PublicResolverContract = _PublicResolverContract;
 };
 export const setRegistrarControllerContract = (_RegistrarControllerContract) => {
-  console.log('!Set contract ', _RegistrarControllerContract);
-  
   RegistrarControllerContract = _RegistrarControllerContract;
 };
 
