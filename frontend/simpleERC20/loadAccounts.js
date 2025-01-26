@@ -14,7 +14,7 @@ const highlightAmount = (element, oldBalance, newBalance) => {
     element.classList.remove("blink-green");
     element.classList.add("blink-red");
   }
-}
+};
 
 export async function loadAccounts() {
   const provider = getProvider();
@@ -51,8 +51,8 @@ export async function loadAccounts() {
   contractSIMbalanceElement.innerHTML = ethers.formatEther(contractSIMbalance);
 
   if (isInited) {
-    highlightAmount(contractETHbalanceElement, oldETHbalance, ethBalance)
-    highlightAmount(contractSIMbalanceElement, oldSIMbalance, simBalance)
+    highlightAmount(contractETHbalanceElement, oldETHbalance, ethBalance);
+    highlightAmount(contractSIMbalanceElement, oldSIMbalance, simBalance);
   }
 
   for (const account of accounts) {
@@ -70,7 +70,7 @@ export async function loadAccounts() {
 
     listItem.id = account.address;
 
-    const btnId = `allocate-to-${account.address}-btn`;
+    const allocateBtnId = `allocate-to-${account.address}-btn`;
 
     let oldETHBalance = 0;
     let oldSIMBalance = 0;
@@ -89,7 +89,7 @@ export async function loadAccounts() {
      <b> <span class="eth-balance" >${ethBalance}</span>  SepoliaETH. </b>
        <span class="sim-balance" > ${simBalance}</span> SIM 
       (${account.address})
-      <button id="${btnId}">Allocate</button>
+      <button id="${allocateBtnId}">Allocate</button>
     `;
 
     if (!existingElement) {
@@ -98,12 +98,12 @@ export async function loadAccounts() {
       const ethBlock = existingElement.querySelector(".eth-balance");
       const simBlock = existingElement.querySelector(".sim-balance");
 
-      highlightAmount(ethBlock, oldETHBalance, ethBalance)
-      highlightAmount(simBlock, oldSIMBalance, simBalance)
+      highlightAmount(ethBlock, oldETHBalance, ethBalance);
+      highlightAmount(simBlock, oldSIMBalance, simBalance);
     }
 
     document
-      .getElementById(btnId)
+      .getElementById(allocateBtnId)
       .addEventListener("click", () => allocateTo(account.address));
   }
 

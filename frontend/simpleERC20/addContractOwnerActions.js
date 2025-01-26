@@ -5,18 +5,22 @@ export const addContractOwnerActions = async () => {
   const currentAddress = await getSigner().getAddress();
   if (currentAddress === "0xe5982F617fc8c8Bf55Ccc919F78DC6129Acb5532") {
     const withdrowBtn = document.createElement("button");
+    withdrowBtn.id = "withdrow-button";
     withdrowBtn.innerHTML = "Withdrow all eth from account";
     document.getElementById("withdrow-block").append(withdrowBtn);
 
-    const airdropBtn = document.createElement("button");
-    airdropBtn.innerHTML = "Airdrop";
-    document.getElementById("airdrop-block").append(airdropBtn);
+    const airdropForAllBtn = document.createElement("button");
+
+    airdropForAllBtn.id = "airdrop-for-all-btn";
+
+    airdropForAllBtn.innerHTML = "Airdrop for all";
+    document.getElementById("airdrop-block").append(airdropForAllBtn);
 
     document
-      .querySelector("#withdrow-block button")
+      .querySelector("#withdrow-button")
       ?.addEventListener("click", () => withdrowETHToCreatorAccount());
     document
-      .querySelector("#airdrop-block button")
+      .querySelector("#airdrop-for-all-btn")
       ?.addEventListener("click", () => performAirdropForAll());
   }
 };

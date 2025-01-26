@@ -3,7 +3,6 @@ import { getContract, getProvider, getSigner } from "./essentials.js";
 import { addTransactionToHistory } from "./history/addTransactionToHistory.js";
 import { loadAccounts } from "./loadAccounts.js";
 
-
 export const addActionsHandlers = async () => {
   document.getElementById("buy-value").addEventListener("input", async (e) => {
     console.log(e.target.value);
@@ -21,6 +20,9 @@ export const addActionsHandlers = async () => {
   document
     .getElementById("approve-btn")
     .addEventListener("click", () => approveTokens());
+  document
+    .getElementById("claim-airdrop-btn")
+    .addEventListener("click", () => claimAirdrop());
 };
 
 async function transferTokens() {
@@ -84,7 +86,7 @@ async function sellTokens() {
   }
   const formattedValue = ethers.parseEther(`${value}`);
   console.log(formattedValue);
-  
+
   const tx = await contract.sellTokens(formattedValue);
 
   addTransactionToHistory(tx, await contract.getAddress());
@@ -104,5 +106,21 @@ export async function allocateTo(account) {
 
   await tx.wait();
   alert(`Allocated ${amount} SIM to ${account}`);
+  loadAccounts();
+}
+
+async function claimAirdrop() {
+  const contract = getContract();
+
+  const result = confirm("Do you really want to claim airdrop?");
+  if (!result) return;
+
+  const tx = await contract.claimAirdrop();
+
+  addTransactionToHistory(tx, "");
+
+  await tx.wait();
+  console.log("Airdrop has been claimed");
+
   loadAccounts();
 }

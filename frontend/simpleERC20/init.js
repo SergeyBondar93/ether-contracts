@@ -22,8 +22,6 @@ async function initialize() {
   setSigner(signer);
   setContract(new ethers.Contract(contractAddress, contractABI, signer));
 
-  setENSContracts();
-
   document.querySelector(
     "#contract-address"
   ).innerHTML = `Contract address: ${contractAddress}`;

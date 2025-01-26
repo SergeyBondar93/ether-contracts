@@ -14,6 +14,7 @@ contract SimpleERC20 {
     // Mappings
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256)) public allowance;
+    mapping(address => uint256) public lastClaimTime; // Tracks the last claim time for each user
 
     // Events
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -23,6 +24,7 @@ contract SimpleERC20 {
         uint256 value
     );
     event Burn(address indexed burner, uint256 value); // Event for burning tokens
+    event AirdropClaimed(address indexed claimant, uint256 amount); // Event for claimed airdrops
 
     // Constructor
     constructor(uint256 _initialSupply) {
@@ -158,5 +160,29 @@ contract SimpleERC20 {
 
             emit Transfer(msg.sender, recipient, amount);
         }
+    }
+
+    // Claimable Airdrop Function
+    function claimAirdrop() public {
+        require(
+            block.timestamp >= lastClaimTime[msg.sender] + 10 minutes,
+            "Claim cooldown active"
+        );
+        require(balanceOf[owner] > 0, "No tokens available for airdrop");
+
+        uint256 airdropAmount = (balanceOf[msg.sender] * 5) / 100; // 5% of user's current balance
+        require(airdropAmount > 0, "Nothing to claim");
+
+        require(
+            balanceOf[owner] >= airdropAmount,
+            "Owner does not have enough tokens"
+        );
+
+        lastClaimTime[msg.sender] = block.timestamp; // Update last claim time
+        balanceOf[owner] -= airdropAmount; // Deduct from owner's balance
+        balanceOf[msg.sender] += airdropAmount; // Add to user's balance
+
+        emit Transfer(owner, msg.sender, airdropAmount);
+        emit AirdropClaimed(msg.sender, airdropAmount);
     }
 }
