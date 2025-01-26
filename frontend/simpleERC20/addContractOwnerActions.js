@@ -1,4 +1,4 @@
-import { getSigner } from "./essentials.js";
+import { getContract, getSigner } from "./essentials.js";
 import { performAirdropForAll } from "./airdrop/airdropForAll.js";
 
 export const addContractOwnerActions = async () => {

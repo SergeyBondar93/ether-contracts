@@ -94,7 +94,7 @@ contract SimpleERC20 {
     }
 
     // Function to sell tokens for ETH
-    function sellTokens(uint256 _amount) public {
+    function sellTokens(uint256 _amount) public returns (uint256) {
         require(_amount > 0, "Amount must be greater than zero");
         require(balanceOf[msg.sender] >= _amount, "Insufficient token balance");
 
@@ -107,9 +107,9 @@ contract SimpleERC20 {
         balanceOf[msg.sender] -= _amount;
         balanceOf[address(this)] += _amount;
 
-        payable(msg.sender).transfer(etherToTransfer); // Transfer Ether to the seller
-
         emit Transfer(msg.sender, address(this), _amount);
+
+        return etherToTransfer; // This must explicitly return the ETH amount
     }
 
     // Function to withdraw Ether from the contract (restricted to owner)

@@ -1,23 +1,27 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
-import { getContract } from "./essentials.js";
+import { getContract, getProvider, getSigner } from "./essentials.js";
 import { addTransactionToHistory } from "./history/addTransactionToHistory.js";
 import { loadAccounts } from "./loadAccounts.js";
 
-export const addActionsHandlers = () => {
-  document
-  .getElementById("buy-btn")
-  .addEventListener("click", () => buyTokens());
-document
-  .getElementById("sell-btn")
-  .addEventListener("click", () => sellTokens());
-document
-  .getElementById("transfer-btn")
-  .addEventListener("click", () => transferTokens());
-document
-  .getElementById("approve-btn")
-  .addEventListener("click", () => approveTokens());
-}
 
+export const addActionsHandlers = async () => {
+  document.getElementById("buy-value").addEventListener("input", async (e) => {
+    console.log(e.target.value);
+  });
+
+  document
+    .getElementById("buy-btn")
+    .addEventListener("click", () => buyTokens());
+  document
+    .getElementById("sell-btn")
+    .addEventListener("click", () => sellTokens());
+  document
+    .getElementById("transfer-btn")
+    .addEventListener("click", () => transferTokens());
+  document
+    .getElementById("approve-btn")
+    .addEventListener("click", () => approveTokens());
+};
 
 async function transferTokens() {
   const contract = getContract();
@@ -79,7 +83,8 @@ async function sellTokens() {
     return;
   }
   const formattedValue = ethers.parseEther(`${value}`);
-
+  console.log(formattedValue);
+  
   const tx = await contract.sellTokens(formattedValue);
 
   addTransactionToHistory(tx, await contract.getAddress());
@@ -88,8 +93,6 @@ async function sellTokens() {
   alert(`You have sold tokens`);
   loadAccounts();
 }
-
-
 
 export async function allocateTo(account) {
   const contract = getContract();
