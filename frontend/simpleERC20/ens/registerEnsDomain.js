@@ -2,6 +2,8 @@ import { ethers, namehash } from "../../../node_modules/ethers/dist/ethers.js";
 import { getSigner } from "../essentials.js";
 import { getRegistrarControllerContract } from "./contracts.js";
 
+
+const ensName = "my-demo-testname-for-test-app";
 const owner = "0xe5982F617fc8c8Bf55Ccc919F78DC6129Acb5532"; // Your Ethereum address
 const duration = 31556952; // 1 year in seconds
 const secret = ethers.encodeBytes32String(""); // Empty secret for simplicity
@@ -11,7 +13,7 @@ const data = []; // No additional records
 const reverseRecord = false; // Set reverse record
 const ownerControlledFuses = 0; // No specific permissions
 
-async function getOwnerOfENS(ensName) {
+async function getOwnerOfENS() {
   const ensRegistryAddress = "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e"; // Sepolia ENS Registry
   const ensRegistryABI = [
     "function owner(bytes32 node) view returns (address)",
@@ -29,8 +31,12 @@ async function getOwnerOfENS(ensName) {
   return owner;
 }
 
-export async function registerENSName(ensName) {
-  getOwnerOfENS(ensName);
+export async function registerENSName() {
+  getOwnerOfENS();
+
+  const controller = await getController(ensName);
+    console.log(`The controller of ${ensName}.eth is: ${controller}`);
+
   // return;
 
   const RegistrarControllerContract = getRegistrarControllerContract();
