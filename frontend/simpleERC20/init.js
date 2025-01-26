@@ -56,14 +56,6 @@ async function initialize() {
       window.location.reload();
     });
   }
-
-  const controller = await getController(ensName);
-  console.log(`The controller of ${ensName}.eth is: ${controller}`);
-
-  /**
-   * one-time action
-   */
-  registerENSName(ensName);
 }
 
 initialize();
