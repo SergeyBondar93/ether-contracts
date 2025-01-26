@@ -16,8 +16,6 @@ const provider = new ethers.BrowserProvider(window.ethereum);
 
 setProvider(new ethers.BrowserProvider(window.ethereum));
 
-const ensName = "my-demo-testname-for-test-app";
-
 async function initialize() {
   await getProvider().send("eth_requestAccounts", []);
   const signer = await provider.getSigner();

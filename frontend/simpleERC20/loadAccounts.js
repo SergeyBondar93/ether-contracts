@@ -6,6 +6,16 @@ import { addActionsHandlers, allocateTo } from "./addActionsHandlers.js";
 
 let isInited = false;
 
+const highlightAmount = (element, oldBalance, newBalance) => {
+  if (newBalance > oldBalance) {
+    element.classList.remove("blink-red");
+    element.classList.add("blink-green");
+  } else if (newBalance < oldBalance) {
+    element.classList.remove("blink-green");
+    element.classList.add("blink-red");
+  }
+}
+
 export async function loadAccounts() {
   const provider = getProvider();
   const contract = getContract();
@@ -41,21 +51,8 @@ export async function loadAccounts() {
   contractSIMbalanceElement.innerHTML = ethers.formatEther(contractSIMbalance);
 
   if (isInited) {
-    if (ethBalance > oldETHbalance) {
-      contractETHbalanceElement.classList.remove("blink-red");
-      contractETHbalanceElement.classList.add("blink-green");
-    } else if (ethBalance < oldETHbalance) {
-      contractETHbalanceElement.classList.remove("blink-green");
-      contractETHbalanceElement.classList.add("blink-red");
-    }
-
-    if (simBalance > oldSIMbalance) {
-      contractSIMbalanceElement.classList.remove("blink-red");
-      contractSIMbalanceElement.classList.add("blink-green");
-    } else if (simBalance < oldSIMbalance) {
-      contractSIMbalanceElement.classList.remove("blink-green");
-      contractSIMbalanceElement.classList.add("blink-red");
-    }
+    highlightAmount(contractETHbalanceElement, oldETHbalance, ethBalance)
+    highlightAmount(contractSIMbalanceElement, oldSIMbalance, simBalance)
   }
 
   for (const account of accounts) {
@@ -100,21 +97,9 @@ export async function loadAccounts() {
     } else {
       const ethBlock = existingElement.querySelector(".eth-balance");
       const simBlock = existingElement.querySelector(".sim-balance");
-      if (ethBalance > oldETHBalance) {
-        ethBlock.classList.remove("blink-red");
-        ethBlock.classList.add("blink-green");
-      } else if (ethBalance < oldETHBalance) {
-        ethBlock.classList.remove("blink-green");
-        ethBlock.classList.add("blink-red");
-      }
 
-      if (simBalance > oldSIMBalance) {
-        simBlock.classList.remove("blink-red");
-        simBlock.classList.add("blink-green");
-      } else if (simBalance < oldSIMBalance) {
-        simBlock.classList.remove("blink-green");
-        simBlock.classList.add("blink-red");
-      }
+      highlightAmount(ethBlock, oldETHBalance, ethBalance)
+      highlightAmount(simBlock, oldSIMBalance, simBalance)
     }
 
     document

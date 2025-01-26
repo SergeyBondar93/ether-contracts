@@ -1,3 +1,8 @@
+import { ethers } from "../../node_modules/ethers/dist/ethers.js";
+import { getContract } from "./essentials.js";
+import { addTransactionToHistory } from "./history/addTransactionToHistory.js";
+import { loadAccounts } from "./loadAccounts.js";
+
 export const addActionsHandlers = () => {
   document
   .getElementById("buy-btn")
