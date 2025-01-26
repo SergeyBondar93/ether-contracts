@@ -1,51 +1,15 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { getContract, getProvider } from "./essentials.js";
 import { fetchEnsAvatar } from "./ens/fetchEnsAvatar.js";
-import { adjustTransactionsHistory } from "./getHistory.js";
+import { addTransactionToHistory } from "./history/addTransactionToHistory.js";
+import { addActionsHandlers, allocateTo } from "./addActionsHandlers.js";
+
 let isInited = false;
-
-const addTransactionToHistory = async (
-  transaction,
-  recipient,
-  { reverseArgs } = {}
-) => {
-  const provider = getProvider();
-  let args = [transaction.from, recipient];
-
-  if (reverseArgs) {
-    args.reverse();
-  }
-
-  adjustTransactionsHistory({
-    transactionHash: transaction.hash,
-    args,
-    fragment: { name: "" },
-  });
-  console.log(transaction);
-
-  return new Promise((res) => {
-    console.log("Transaction Hash:", transaction.hash);
-    const interval = setInterval(async () => {
-      const txReceipt = await provider.getTransactionReceipt(transaction.hash);
-      if (txReceipt) {
-        console.log("Transaction Receipt:", txReceipt);
-        res(txReceipt);
-        clearInterval(interval);
-      } else {
-        console.log("Transaction is still pending...");
-      }
-    }, 1000);
-  });
-};
-
-let initial = true;
 
 export async function loadAccounts() {
   const provider = getProvider();
   const contract = getContract();
   const accounts = await provider.listAccounts();
-  // console.log(provider);
-  // console.log(contract);
 
   const accountsList = document.getElementById("accounts-list");
 
@@ -76,7 +40,7 @@ export async function loadAccounts() {
   );
   contractSIMbalanceElement.innerHTML = ethers.formatEther(contractSIMbalance);
 
-  if (!initial) {
+  if (isInited) {
     if (ethBalance > oldETHbalance) {
       contractETHbalanceElement.classList.remove("blink-red");
       contractETHbalanceElement.classList.add("blink-green");
@@ -92,8 +56,6 @@ export async function loadAccounts() {
       contractSIMbalanceElement.classList.remove("blink-green");
       contractSIMbalanceElement.classList.add("blink-red");
     }
-  } else {
-    initial = false;
   }
 
   for (const account of accounts) {
@@ -153,11 +115,6 @@ export async function loadAccounts() {
         simBlock.classList.remove("blink-green");
         simBlock.classList.add("blink-red");
       }
-
-      // setTimeout(() => {
-      //   ethBlock.classList.remove("blink-green", "blink-red");
-      //   simBlock.classList.remove("blink-green", "blink-red");
-      // }, 3000);
     }
 
     document
@@ -166,185 +123,8 @@ export async function loadAccounts() {
   }
 
   if (!isInited) {
-    isInited = true;
-
-    document
-      .getElementById("buy-btn")
-      .addEventListener("click", () => buyTokens());
-    document
-      .getElementById("sell-btn")
-      .addEventListener("click", () => sellTokens());
-
-    document
-      .getElementById("transfer-btn")
-      .addEventListener("click", () => transferTokens());
-    document
-      .getElementById("approve-btn")
-      .addEventListener("click", () => approveTokens());
-
-    document
-      .querySelector("#withdrow-block button")
-      ?.addEventListener("click", () => withdrowETHToCreatorAccount());
-
-    document
-      .querySelector("#airdrop-block button")
-      ?.addEventListener("click", () => performAirdrop());
-  }
-}
-
-async function transferTokens() {
-  const provider = getProvider();
-  const contract = getContract();
-  const recipient = document.getElementById("recipient").value;
-  const amount = document.getElementById("amount").value;
-  if (!recipient || !amount) return alert("Recipient and amount are required!");
-
-  const tx = await contract.transfer(recipient, ethers.parseEther(amount));
-
-  addTransactionToHistory(tx, recipient);
-
-  await tx.wait();
-  alert("Transfer complete!");
-  loadAccounts();
-}
-
-async function approveTokens() {
-  const provider = getProvider();
-  const contract = getContract();
-  const recipient = document.getElementById("spender").value;
-  const amount = document.getElementById("approve-amount").value;
-  if (!recipient || !amount) return alert("Spender and amount are required!");
-
-  addTransactionToHistory(tx, recipient);
-  const tx = await contract.approve(recipient, ethers.parseEther(amount));
-  await tx.wait();
-  alert("Approval complete!");
-}
-
-async function allocateTo(account) {
-  const provider = getProvider();
-  const contract = getContract();
-  const amount = prompt("Enter amount to allocate:");
-  if (!amount) return;
-  const tx = await contract.transfer(account, ethers.parseEther(amount));
-
-  addTransactionToHistory(tx, account);
-
-  await tx.wait();
-  alert(`Allocated ${amount} SIM to ${account}`);
-  loadAccounts();
-}
-
-async function buyTokens() {
-  const provider = getProvider();
-  const contract = getContract();
-  const value = Number(document.getElementById("buy-value").value);
-
-  if (Number.isNaN(value) || value > 1) {
-    alert(
-      "Please enter a valid number. max number = 1. You need to enter value in ETH"
-    );
-    return;
+    addActionsHandlers();
   }
 
-  const tx = await contract.buyTokens({
-    value: ethers.parseUnits(String(value), "ether"),
-  });
-
-  addTransactionToHistory(tx, await contract.getAddress(), {
-    reverseArgs: true,
-  });
-
-  await tx.wait();
-  alert(`You have bought tokens`);
-  loadAccounts();
-}
-
-async function sellTokens() {
-  const provider = getProvider();
-  const contract = getContract();
-  const value = Number(document.getElementById("sell-value").value);
-
-  if (Number.isNaN(value)) {
-    alert("Please enter a valid number.");
-    return;
-  }
-  const formattedValue = ethers.parseEther(`${value}`);
-
-  const tx = await contract.sellTokens(formattedValue);
-
-  addTransactionToHistory(tx, await contract.getAddress());
-
-  await tx.wait();
-  alert(`You have sold tokens`);
-  loadAccounts();
-}
-
-async function withdrowETHToCreatorAccount() {
-  const provider = getProvider();
-  const contract = getContract();
-  const tx = await contract.withdrawEther();
-  await tx.wait();
-  alert(`You have withdrown tokens`);
-}
-
-function waitForUserChoice(accounts) {
-  console.log(accounts);
-  const value = accounts.map((acc) => acc.address);
-  return new Promise((resolve) => {
-    const dialogOverlay = document.getElementById("dialog");
-    const input = document.getElementById("dialog-input");
-    const cancelButton = document.getElementById("cancel-button");
-    const confirmButton = document.getElementById("confirm-button");
-    console.log(value);
-
-    input.value = JSON.stringify(value, null, 2);
-
-    dialogOverlay.style.display = "flex";
-
-    dialogOverlay.onclick = (event) => {
-      console.log(event.target, dialogOverlay, event.target === dialogOverlay);
-
-      if (event.target === dialogOverlay) {
-        console.log("!INSIDE", event.target);
-
-        dialogOverlay.style.display = "none";
-        resolve([false, null]);
-      }
-    };
-
-    cancelButton.onclick = () => {
-      dialogOverlay.style.display = "none";
-      resolve([false, null]);
-    };
-
-    confirmButton.onclick = () => {
-      try {
-        const value = input.value.trim();
-        const parsed = JSON.parse(value);
-        dialogOverlay.style.display = "none";
-        resolve([true, parsed]);
-      } catch (error) {
-        alert("Incorrect JSON of addresses");
-        return;
-      }
-    };
-  });
-}
-
-async function performAirdrop() {
-  const provider = getProvider();
-  const contract = getContract();
-  const accounts = await provider.listAccounts();
-  const [continueChoice, addresses] = await waitForUserChoice(accounts);
-
-  if (!continueChoice) return;
-
-  const tx = await contract.airdrop(addresses, 5);
-
-  addTransactionToHistory(tx, "");
-
-  await tx.wait();
-  console.log(`Airdrop has done successfully`);
-  loadAccounts();
+  isInited = true;
 }

@@ -2,7 +2,6 @@ import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { loadAccounts } from "./loadAccounts.js";
 import { contractAddress } from "./config.js";
 import { contractABI } from "./abi.js";
-import { getHistory } from "./getHistory.js";
 import {
   getProvider,
   setContract,
@@ -10,8 +9,8 @@ import {
   setSigner,
 } from "./essentials.js";
 import { setENSContracts } from "./ens/setENSContracts.js";
-import { getController } from "./ens/getControllerOfENS.js";
-import { registerENSName } from "./ens/registerEnsDomain.js";
+import { getHistory } from "./history/getHistory.js";
+import { addContractOwnerActions } from "./addContractOwnerActions.js";
 
 const provider = new ethers.BrowserProvider(window.ethereum);
 
@@ -37,15 +36,7 @@ async function initialize() {
     "current"
   ).innerHTML = `Current account: ${currentAddress}`;
 
-  if (currentAddress === "0xe5982F617fc8c8Bf55Ccc919F78DC6129Acb5532") {
-    const withdrowBtn = document.createElement("button");
-    withdrowBtn.innerHTML = "Withdrow all eth from account";
-    document.getElementById("withdrow-block").append(withdrowBtn);
-
-    const airdropBtn = document.createElement("button");
-    airdropBtn.innerHTML = "Airdrop";
-    document.getElementById("airdrop-block").append(airdropBtn);
-  }
+  addContractOwnerActions();
 
   loadAccounts();
 
