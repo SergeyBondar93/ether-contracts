@@ -63,7 +63,7 @@ async function renderEvents(events) {
 }
 
 export const getHistory = () => {
-    const contract = getContract();
+  const contract = getContract();
   async function getContractEvents() {
     try {
       const transferEvents = await contract.queryFilter("Transfer");

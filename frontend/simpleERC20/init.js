@@ -1,59 +1,31 @@
 import { ethers } from "../../node_modules/ethers/dist/ethers.js";
 import { loadAccounts } from "./loadAccounts.js";
-import { contractAddress, ENS_SEPOLIA_ADDRESSES } from "./config.js";
-import {
-  contractABI,
-  ENSRegistryABI,
-  PublicResolverABI,
-  RegistrarControllerABI,
-} from "./abi.js";
+import { contractAddress } from "./config.js";
+import { contractABI } from "./abi.js";
 import { getHistory } from "./getHistory.js";
 import {
   getProvider,
-  getSigner,
   setContract,
-  setENSRegistryContract,
   setProvider,
-  setPublicResolverContract,
-  setRegistrarControllerContract,
   setSigner,
 } from "./essentials.js";
-import { registerENSName } from "./registerEnsDomain.js";
+import { setENSContracts } from "./ens/setENSContracts.js";
+import { getController } from "./ens/getControllerOfENS.js";
+import { registerENSName } from "./ens/registerEnsDomain.js";
 
 const provider = new ethers.BrowserProvider(window.ethereum);
 
 setProvider(new ethers.BrowserProvider(window.ethereum));
 
-
+const ensName = "my-demo-testname-for-test-app";
 
 async function initialize() {
   await getProvider().send("eth_requestAccounts", []);
-  const signer = await provider.getSigner()
+  const signer = await provider.getSigner();
   setSigner(signer);
   setContract(new ethers.Contract(contractAddress, contractABI, signer));
 
-  setENSRegistryContract(
-    new ethers.Contract(
-      ENS_SEPOLIA_ADDRESSES.ENSRegistry,
-      ENSRegistryABI,
-      signer
-    )
-  );
-  setPublicResolverContract(
-    new ethers.Contract(
-      ENS_SEPOLIA_ADDRESSES.PublicResolver,
-      PublicResolverABI,
-      signer
-    )
-  );
-  
-  setRegistrarControllerContract(
-    new ethers.Contract(
-      ENS_SEPOLIA_ADDRESSES.ETHRegistrarController,
-      RegistrarControllerABI,
-      signer
-    )
-  );
+  setENSContracts();
 
   document.querySelector(
     "#contract-address"
@@ -85,12 +57,13 @@ async function initialize() {
     });
   }
 
+  const controller = await getController(ensName);
+  console.log(`The controller of ${ensName}.eth is: ${controller}`);
+
   /**
    * one-time action
    */
-  registerENSName();
+  registerENSName(ensName);
 }
 
 initialize();
-
-
