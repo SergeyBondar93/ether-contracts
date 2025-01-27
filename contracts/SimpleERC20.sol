@@ -109,6 +109,8 @@ contract SimpleERC20 {
         balanceOf[msg.sender] -= _amount;
         balanceOf[address(this)] += _amount;
 
+        payable(msg.sender).transfer(etherToTransfer); // Transfer Ether to the seller
+
         emit Transfer(msg.sender, address(this), _amount);
 
         return etherToTransfer; // This must explicitly return the ETH amount
