@@ -1,0 +1,1 @@
+this folder contains some interesting requests from metamask when we try to perform a transaction

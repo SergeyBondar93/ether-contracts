@@ -1,0 +1,12 @@
+{
+  "id": "aa9ffb39-2770-43ac-82b1-a2ce7eea35b6",
+  "jsonrpc": "2.0",
+  "method": "eth_call",
+  "params": [
+      {
+          "to": "0xab1d06e0af5914413433426aa1c3eda3265879c4",
+          "data": "0x313ce567"
+      },
+      "0x73f2f9"
+  ]
+}

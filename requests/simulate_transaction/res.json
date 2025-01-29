@@ -1,0 +1,203 @@
+{
+  "jsonrpc": "2.0",
+  "result": {
+      "transactions": [
+          {
+              "return": "0x00000000000000000000000000000000000000000000002b79fc5ed267480000",
+              "status": "0x1",
+              "gasUsed": "0x5ecd",
+              "gasLimit": "0x6020",
+              "fees": [
+                  {
+                      "maxFeePerGas": "0xa160ff6b",
+                      "maxPriorityFeePerGas": "0x3b9aca04",
+                      "gas": "0x6020",
+                      "balanceNeeded": "0x3c988be86d80",
+                      "currentBalance": "0xf87ba420ece0db",
+                      "error": ""
+                  }
+              ],
+              "stateDiff": {
+                  "post": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "nonce": "0x19"
+                      }
+                  },
+                  "pre": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "balance": "0xf87ba420ece0db",
+                          "nonce": "0x18"
+                      }
+                  }
+              },
+              "feeEstimate": 50139189454522,
+              "baseFeePerGas": 1065976737
+          },
+          {
+              "return": "0x",
+              "status": "0x1",
+              "gasUsed": "0x8e40",
+              "gasLimit": "0x8fab",
+              "fees": [
+                  {
+                      "maxFeePerGas": "0xa160ff6b",
+                      "maxPriorityFeePerGas": "0x3b9aca04",
+                      "gas": "0x8fab",
+                      "balanceNeeded": "0x316197dc5e7124",
+                      "currentBalance": "0xf83f0b9504735b",
+                      "error": ""
+                  }
+              ],
+              "stateDiff": {
+                  "post": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "balance": "0xc7749d3f0660db",
+                          "nonce": "0x1a"
+                      },
+                      "0xab1d06e0af5914413433426aa1c3eda3265879c4": {
+                          "balance": "0x7814ebc1688000",
+                          "storage": {
+                              "0x2c84595b74c955f56450d8a3fe039a9f8dd5832ace9b17d525028536348a20ff": "0x000000000000000000000000000000000000000000000a94ac5237b9fb0c0000",
+                              "0x3728f9d66d90a4ab9f284faa6d75627370459cbd1088f129ebd0bc9610224322": "0x00000000000000000000000000000000000000000000002c397fd1b4d3ac0000"
+                          }
+                      }
+                  },
+                  "pre": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "balance": "0xf87ba420ece0db",
+                          "nonce": "0x19"
+                      },
+                      "0xab1d06e0af5914413433426aa1c3eda3265879c4": {
+                          "balance": "0x470de4df820000",
+                          "nonce": "0x1",
+                          "storage": {
+                              "0x2c84595b74c955f56450d8a3fe039a9f8dd5832ace9b17d525028536348a20ff": "0x000000000000000000000000000000000000000000000a956bd5aa9c67700000",
+                              "0x3728f9d66d90a4ab9f284faa6d75627370459cbd1088f129ebd0bc9610224322": "0x00000000000000000000000000000000000000000000002b79fc5ed267480000"
+                          }
+                      }
+                  }
+              },
+              "feeEstimate": 75234608891008,
+              "baseFeePerGas": 1065976737
+          },
+          {
+              "return": "0x00000000000000000000000000000000000000000000002c397fd1b4d3ac0000",
+              "status": "0x1",
+              "gasUsed": "0x5ecd",
+              "gasLimit": "0x6020",
+              "fees": [
+                  {
+                      "maxFeePerGas": "0xa160ff6b",
+                      "maxPriorityFeePerGas": "0x3b9aca04",
+                      "gas": "0x6020",
+                      "balanceNeeded": "0x3c988be86d80",
+                      "currentBalance": "0xc6dd73b8a60237",
+                      "error": ""
+                  }
+              ],
+              "stateDiff": {
+                  "post": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "nonce": "0x1b"
+                      }
+                  },
+                  "pre": {
+                      "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                          "balance": "0xc7749d3f0660db",
+                          "nonce": "0x1a"
+                      }
+                  }
+              },
+              "feeEstimate": 50139189454522,
+              "baseFeePerGas": 1065976737
+          }
+      ],
+      "blockNumber": "0x73f2f9",
+      "id": "d87eec8c-9a24-408e-8ad2-5d3e95ab4550"
+  },
+  "id": "13"
+}
+
+
+/* second */
+
+{
+    "jsonrpc": "2.0",
+    "result": {
+        "transactions": [
+            {
+                "return": "0x",
+                "status": "0x1",
+                "gasUsed": "0x8e40",
+                "gasLimit": "0x8fab",
+                "fees": [
+                    {
+                        "maxFeePerGas": "0x0",
+                        "maxPriorityFeePerGas": "0x0",
+                        "gas": "0x8fab",
+                        "balanceNeeded": "0x310706e1e68000",
+                        "currentBalance": "0xf87ba420ece0db",
+                        "error": ""
+                    }
+                ],
+                "stateDiff": {
+                    "post": {
+                        "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                            "balance": "0xc7749d3f0660db",
+                            "nonce": "0x19"
+                        },
+                        "0xab1d06e0af5914413433426aa1c3eda3265879c4": {
+                            "balance": "0x7814ebc1688000",
+                            "storage": {
+                                "0x2c84595b74c955f56450d8a3fe039a9f8dd5832ace9b17d525028536348a20ff": "0x000000000000000000000000000000000000000000000a94ac5237b9fb0c0000",
+                                "0x3728f9d66d90a4ab9f284faa6d75627370459cbd1088f129ebd0bc9610224322": "0x00000000000000000000000000000000000000000000002c397fd1b4d3ac0000"
+                            }
+                        }
+                    },
+                    "pre": {
+                        "0x965e660888c0c26610f3aad398846d69f589bac8": {
+                            "balance": "0xf87ba420ece0db",
+                            "nonce": "0x18"
+                        },
+                        "0xab1d06e0af5914413433426aa1c3eda3265879c4": {
+                            "balance": "0x470de4df820000",
+                            "nonce": "0x1",
+                            "storage": {
+                                "0x2c84595b74c955f56450d8a3fe039a9f8dd5832ace9b17d525028536348a20ff": "0x000000000000000000000000000000000000000000000a956bd5aa9c67700000",
+                                "0x3728f9d66d90a4ab9f284faa6d75627370459cbd1088f129ebd0bc9610224322": "0x00000000000000000000000000000000000000000000002b79fc5ed267480000"
+                            }
+                        }
+                    }
+                },
+                "callTrace": {
+                    "from": "0x965e660888c0c26610f3aad398846d69f589bac8",
+                    "to": "0xab1d06e0af5914413433426aa1c3eda3265879c4",
+                    "type": "CALL",
+                    "gas": "0x1dcd6500",
+                    "gasUsed": "0x8e40",
+                    "value": "0x310706e1e68000",
+                    "input": "0xd0febe4c",
+                    "output": "0x",
+                    "error": "",
+                    "calls": null,
+                    "logs": [
+                        {
+                            "address": "0xab1d06e0af5914413433426aa1c3eda3265879c4",
+                            "topics": [
+                                "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+                                "0x000000000000000000000000ab1d06e0af5914413433426aa1c3eda3265879c4",
+                                "0x000000000000000000000000965e660888c0c26610f3aad398846d69f589bac8"
+                            ],
+                            "data": "0x000000000000000000000000000000000000000000000000bf8372e26c640000"
+                        }
+                    ]
+                },
+                "feeEstimate": 38818608854592,
+                "baseFeePerGas": 1065976737
+            }
+        ],
+        "blockNumber": "0x73f2f9",
+        "id": "3bee48a6-7608-4be6-9689-fa3e4db1822c"
+    },
+    "id": "12"
+}

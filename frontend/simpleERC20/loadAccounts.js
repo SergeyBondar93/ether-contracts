@@ -24,6 +24,8 @@ export async function loadAccounts() {
   const accountsList = document.getElementById("accounts-list");
 
   const network = await provider.getNetwork();
+
+  console.log("Connected Network:", network);
   if (network.name !== "sepolia") {
     console.log("Please switch your MetaMask to the Sepolia network.");
     return;
