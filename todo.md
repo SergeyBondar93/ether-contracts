@@ -12,15 +12,15 @@
 
    - [x] Create a simple React app that connects to MetaMask and displays the balance of your ERC-20 token.
    - [x] Features: Token balance display, transaction history.
-   - [ ] ENS: Create functionality to get avatars for accounts.
+   - [-] ENS: Create functionality to get avatars for accounts.
 
 3. **Airdrop Smart Contract**
 
    - [x] Write a smart contract to distribute ERC-20 tokens to multiple addresses.
-   - [ ] Features:
-   - [ ] Automated airdrop function.
-   - [ ] Include edge-case testing (e.g., empty lists, gas-efficient bulk transfers).
-   - [ ] Add an optional frontend for interaction.
+   - [x] Features:
+   - [x] Automated airdrop function.
+   - [x] Include edge-case testing (e.g., empty lists, gas-efficient bulk transfers).
+   - [x] Add an optional frontend for interaction.
 
 4. **The Graph Integration**
    - [ ] Read The Graph documentation.
