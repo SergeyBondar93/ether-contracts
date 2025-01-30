@@ -187,4 +187,7 @@ contract SimpleERC20 {
         emit Transfer(owner, msg.sender, airdropAmount);
         emit AirdropClaimed(msg.sender, airdropAmount);
     }
+
+    receive() external payable {}
+
 }

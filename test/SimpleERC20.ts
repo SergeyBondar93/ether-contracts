@@ -63,13 +63,13 @@ describe("SimpleERC20", function () {
         const buyAmount = ethers.parseUnits("1", "ether"); // Sending 1 ETH
         const buyRate = 1000; // Number of tokens per ETH
         const expectedTokens = buyAmount * BigInt(buyRate); // Tokens to receive
-    
+
         // Ensure the contract has enough tokens to sell
         await contract.transfer(contract.target, expectedTokens);
-    
+
         // Buy tokens using the contract's function
         await contract.connect(addr1).buyTokens({ value: buyAmount });
-    
+
         // Check if addr1 received the correct number of tokens
         expect(await contract.balanceOf(addr1.address)).to.equal(expectedTokens);
     });
@@ -77,6 +77,7 @@ describe("SimpleERC20", function () {
     it("should allow selling tokens", async function () {
         const sellAmount = ethers.parseUnits("100", 18);
         await contract.transfer(addr1.address, sellAmount);
+        await owner.sendTransaction({ to: contract.target, value: ethers.parseUnits("1", "ether") });
         await contract.connect(addr1).sellTokens(sellAmount);
         expect(await contract.balanceOf(addr1.address)).to.equal(0);
     });
