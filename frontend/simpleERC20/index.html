@@ -229,5 +229,26 @@
       flex-grow: 1;
       top: 0;
     }
+
+    .new-transaction {
+      background-color: yellow;
+      transition: background-color 0.5s ease-in-out;
+    }
+
+    @keyframes flash {
+      0% {
+        background-color: yellow;
+      }
+      50% {
+        background-color: white;
+      }
+      100% {
+        background-color: yellow;
+      }
+    }
+
+    .new-transaction {
+      animation: flash 1s ease-in-out 5; /* Flashing effect for 5 seconds */
+    }
   </style>
 </html>
