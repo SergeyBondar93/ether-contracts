@@ -1,0 +1,35 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: SimpleERC20
+    network: sepolia
+    source:
+      address: "0x53C0b3d6fA354a274a6cf7f7F5Abc33CAbCf9e50"
+      abi: SimpleERC20
+      startBlock: 7605516
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AirdropClaimed
+        - Approval
+        - Burn
+        - Transfer
+      abis:
+        - name: SimpleERC20
+          file: ./abis/SimpleERC20.json
+      eventHandlers:
+        - event: AirdropClaimed(indexed address,uint256)
+          handler: handleAirdropClaimed
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: Burn(indexed address,uint256)
+          handler: handleBurn
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/simple-erc-20.ts
