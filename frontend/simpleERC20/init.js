@@ -11,6 +11,7 @@ import {
 import { setENSContracts } from "./ens/setENSContracts.js";
 import { getHistory } from "./history/getHistory.js";
 import { addContractOwnerActions } from "./addContractOwnerActions.js";
+import { graphFetchTransactions } from "./history/getTransactionsFromTheGraph.js";
 
 const provider = new ethers.BrowserProvider(window.ethereum);
 
@@ -37,6 +38,8 @@ async function initialize() {
   loadAccounts();
 
   getHistory();
+
+  graphFetchTransactions();
 
   if (window.ethereum) {
     window.ethereum.on("accountsChanged", () => {

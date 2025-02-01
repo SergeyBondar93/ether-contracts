@@ -36,7 +36,6 @@ async function transferTokens() {
   addTransactionToHistory(tx, recipient);
 
   await tx.wait();
-  alert("Transfer complete!");
   loadAccounts();
 }
 
@@ -46,10 +45,10 @@ async function approveTokens() {
   const amount = document.getElementById("approve-amount").value;
   if (!recipient || !amount) return alert("Spender and amount are required!");
 
-  addTransactionToHistory(tx, recipient);
   const tx = await contract.approve(recipient, ethers.parseEther(amount));
+  addTransactionToHistory(tx, recipient);
   await tx.wait();
-  alert("Approval complete!");
+  loadAccounts();
 }
 
 async function buyTokens() {
@@ -72,7 +71,6 @@ async function buyTokens() {
   });
 
   await tx.wait();
-  alert(`You have bought tokens`);
   loadAccounts();
 }
 
@@ -92,7 +90,6 @@ async function sellTokens() {
   addTransactionToHistory(tx, await contract.getAddress());
 
   await tx.wait();
-  alert(`You have sold tokens`);
   loadAccounts();
 }
 

@@ -1,6 +1,7 @@
 import { contractAddress } from "../config.js";
 import { ethers } from "../../../node_modules/ethers/dist/ethers.js";
 import { getContract } from "../essentials.js";
+import { graphFetchTransactions } from "./getTransactionsFromTheGraph.js";
 const eventsList = document.getElementById("events-list");
 
 const getAccName = (address) => {
@@ -23,6 +24,8 @@ export async function adjustTransactionsHistory(event) {
 
   if (!transactionHash) return;
 
+  // remove the transaction if it wa added using some method in this app.
+  // each method creates and adds a placeholder to the transaction list
   document.getElementById(transactionHash)?.remove();
 
   const [from, to, amount] = event.args;
@@ -69,8 +72,12 @@ export const getHistory = () => {
       const transferEvents = await contract.queryFilter("Transfer");
       const approvalEvents = await contract.queryFilter("Approval");
       console.log("!Start getting ");
+      const events = [...transferEvents, ...approvalEvents].sort(
+        (a, b) => a.blockNumber - b.blockNumber
+      );
+      console.log(events);
 
-      const allEvents = renderEvents([...transferEvents, ...approvalEvents]);
+      const allEvents = renderEvents(events);
       return allEvents;
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -78,14 +85,21 @@ export const getHistory = () => {
     }
   }
   getContractEvents();
-  console.log("!GET HISTORY CALL");
 
   contract.on("Transfer", async (_a, _b, _c, event) => {
     adjustTransactionsHistory(event);
-    console.log("!START TRANSFER", _a, _b, _c, event);
+    graphFetchTransactions();
   });
   contract.on("Approval", async (_a, _b, _c, event) => {
     adjustTransactionsHistory(event);
-    console.log("!START APPROVAL", _a, _b, _c, event);
+    graphFetchTransactions();
+  });
+  contract.on("Burn", async (_a, _b, _c, event) => {
+    adjustTransactionsHistory(event);
+    graphFetchTransactions();
+  });
+  contract.on("AirdropClaimed", async (_a, _b, _c, event) => {
+    adjustTransactionsHistory(event);
+    graphFetchTransactions();
   });
 };
