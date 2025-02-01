@@ -17,3 +17,7 @@ https://sepolia.etherscan.io/address/0x0a080953a00794Bb9b69eEdd4c3B4028076D4134#
 ## SimpleERC20 contract deployed on sepolia (With airdrop initiated by owner) : 0x7E5103D45D1b3655b0A54AE164d2D1BB909057Fd
 
 https://sepolia.etherscan.io/address/0x7E5103D45D1b3655b0A54AE164d2D1BB909057Fd#code
+
+## SimpleERC20 The Graph real-time history, Claimable Airdrop  : 0x53C0b3d6fA354a274a6cf7f7F5Abc33CAbCf9e50
+
+https://sepolia.etherscan.io/address/0x53C0b3d6fA354a274a6cf7f7F5Abc33CAbCf9e50#code
