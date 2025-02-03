@@ -23,9 +23,9 @@
    - [x] Add an optional frontend for interaction.
 
 4. **The Graph Integration**
-   - [ ] Read The Graph documentation.
-   - [ ] Query subgraphs from existing dApps (e.g., Uniswap) for practical understanding.
-   - [ ] Create functionality to query all contract and transaction data.
+   - [x] Read The Graph documentation.
+   - [x] Query subgraphs from existing dApps (e.g., Uniswap) for practical understanding.
+   - [x] Create functionality to query all contract and transaction data.
 
 ---
 
