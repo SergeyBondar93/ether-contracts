@@ -95,11 +95,11 @@ export const getHistory = () => {
     graphFetchTransactions();
   });
   contract.on("Burn", async (_a, _b, _c, event) => {
-    adjustTransactionsHistory(event);
+    getHistory()
     graphFetchTransactions();
   });
   contract.on("AirdropClaimed", async (_a, _b, _c, event) => {
-    adjustTransactionsHistory(event);
+    getHistory()
     graphFetchTransactions();
   });
 };
